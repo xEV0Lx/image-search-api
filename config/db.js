@@ -12,6 +12,7 @@ const pool = mysql.createPool({
   queueLimit: 0,
   ssl: {
     ca: fs.readFileSync('../isrgrootx1.pem'),
+    minVersion: 'TLSv1.2',
     rejectUnauthorized: true
   }
 });
