@@ -10,9 +10,8 @@ const pool = mysql.createPool({
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0,
+  port: 4000,
   ssl: {
-    ca: fs.readFileSync('../isrgrootx1.pem'),
-    minVersion: 'TLSv1.2',
     rejectUnauthorized: true
   }
 });
