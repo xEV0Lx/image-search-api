@@ -29,6 +29,7 @@ async function startServer() {
     '/graphql',
     expressMiddleware(server, {
       context: async ({ req }) => {
+        console.log("CI/CD pipeline test!");
         const authHeader = req.headers['authorization'];
         const token = authHeader && authHeader.split(' ')[1];
 
