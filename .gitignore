@@ -3,3 +3,5 @@ node_modules/
 
 # Ignore local environment variables (Crucial for security!)
 .env
+
+logs/

@@ -1,4 +1,5 @@
 const axios = require('axios');
+const logger = require('../logger');
 
 // Create an isolated Axios instance for Unsplash to separate configuration from logic
 const unsplashClient = axios.create({
@@ -45,7 +46,12 @@ async function search(keyword, perPage = 10) {
 
   } catch (error) {
     // Error isolation: log network or API failure details locally without interrupting server.js
-    console.error('Errors in Unsplash API:', error.response ? error.response.data : error.message);
+    logger.error('Unsplash API error occurred', {
+      message: error.message,
+      status: error.response ? error.response.status : null,
+      stack: error.stack,
+      keyword
+    });
     return []; // Return an empty array to ensure full fault tolerance and graceful degradation
   }
 }

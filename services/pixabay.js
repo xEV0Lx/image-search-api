@@ -1,4 +1,5 @@
 const axios = require('axios');
+const logger = require('../logger');
 
 // Create an isolated Axios instance for Pixabay to separate configuration from logic
 const pixabayClient = axios.create({
@@ -45,7 +46,12 @@ async function search(keyword, perPage = 20, imageType = 'photo') {
 
   } catch (error) {
     // Error isolation: log network or API failure details locally without interrupting server.js
-    console.error('Errors in Pixabay API:', error.message);
+    logger.error('Pixabay API error occurred', {
+          message: error.message,
+          status: error.response ? error.response.status : null,
+          stack: error.stack,
+          keyword
+        });
     return []; // Return an empty array to ensure full fault tolerance and graceful degradation
   }
 }

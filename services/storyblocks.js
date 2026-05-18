@@ -1,5 +1,6 @@
 const axios = require('axios');
 const crypto = require('crypto');
+const logger = require('../logger');
 
 // Create an isolated Axios instance for Storyblocks to separate configuration from logic
 const storyblocksClient = axios.create({
@@ -67,7 +68,12 @@ async function search(keyword, numResults = 10, projectId = 'my_default_project'
 
   } catch (error) {
     // Error isolation: log network or API failure details locally without interrupting server.js
-    console.error('Errors in Storyblocks API:', error.response ? error.response.data : error.message);
+    logger.error('Storyblocks API error occurred', {
+      message: error.message,
+      status: error.response ? error.response.status : null,
+      stack: error.stack,
+      keyword
+    });
     return []; // Return an empty array to ensure full fault tolerance and graceful degradation
   }
 }

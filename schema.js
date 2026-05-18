@@ -6,6 +6,7 @@ const db = require('./config/db');
 const unsplashService = require('./services/unsplash');
 const pixabayService = require('./services/pixabay');
 const storyblocksService = require('./services/storyblocks');
+const logger = require('./logger');
 
 const JWT_SECRET = process.env.JWT_SECRET || 'fallback_static_secret_key';
 
@@ -64,7 +65,12 @@ const resolvers = {
                 return compiledImages;
 
             } catch (error) {
-                console.error('GraphQL Search Error:', error);
+                logger.error('GraphQL Search Query Error', {
+                    message: error.message,
+                    stack: error.stack,
+                    context: { keyword, user: context.user?.username }
+                });
+
                 throw new GraphQLError('Internal server error', {
                     extensions: { code: 'INTERNAL_SERVER_ERROR' }
                 });
@@ -89,7 +95,11 @@ const resolvers = {
                 return { message: 'Registration successful' };
             } catch (error) {
                 if (error.extensions) throw error;
-                console.error('Database Registration Error:', error);
+                logger.error('Database Registration Error', {
+                    message: error.message,
+                    stack: error.stack,
+                    context: { username }
+                });
                 throw new GraphQLError('A database error occurred during the registration process.', { extensions: { code: 'INTERNAL_SERVER_ERROR' } });
             }
         },
@@ -120,7 +130,11 @@ const resolvers = {
                 };
             } catch (error) {
                 if (error.extensions) throw error;
-                console.error('Database Login Error:', error);
+                logger.error('Database Login Error', {
+                    message: error.message,
+                    stack: error.stack,
+                    context: { username }
+                });
                 throw new GraphQLError('A database error occurred during the login process.', { extensions: { code: 'INTERNAL_SERVER_ERROR' } });
             }
         }

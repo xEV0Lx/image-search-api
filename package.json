@@ -19,6 +19,7 @@
     "express": "^5.2.1",
     "graphql": "^16.14.0",
     "jsonwebtoken": "^9.0.3",
-    "mysql2": "^3.22.3"
+    "mysql2": "^3.22.3",
+    "winston": "^3.19.0"
   }
 }
